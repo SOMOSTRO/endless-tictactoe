@@ -1,4 +1,5 @@
 import './styles/main.css';
+import { inject } from '@vercel/analytics';
 import { AI_THINKING_DELAY, getBestMove } from './ai/aiEngine';
 import { Difficulty } from './ai/types';
 import { ANIMATION } from './constants';
@@ -335,6 +336,7 @@ class AppStateManager {
 const app = new AppStateManager();
 
 function init(): void {
+  inject();
   initPWA();
   const cells = initBoard();
   app.setCells(cells);
