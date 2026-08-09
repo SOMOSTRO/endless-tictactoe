@@ -1,5 +1,6 @@
 import './styles/main.css';
 import { inject } from '@vercel/analytics';
+import { injectSpeedInsights } from '@vercel/speed-insights';
 import { AI_THINKING_DELAY, getBestMove } from './ai/aiEngine';
 import { Difficulty } from './ai/types';
 import { ANIMATION } from './constants';
@@ -337,6 +338,7 @@ const app = new AppStateManager();
 
 function init(): void {
   inject();
+  injectSpeedInsights();
   initPWA();
   const cells = initBoard();
   app.setCells(cells);
