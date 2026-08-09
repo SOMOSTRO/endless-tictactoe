@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0D0F12" />
+    <meta name="description" content="Endless Tic-Tac-Toe — FIFO queue mechanics where marks disappear. No ties possible. Beat the AI." />
+    <meta property="og:title" content="Endless Tic-Tac-Toe" />
+    <meta property="og:description" content="Tic-Tac-Toe reimagined. Each player's oldest mark vanishes when they place a 4th. No ties. Ever." />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <title>Endless Tic-Tac-Toe</title>
+  </head>
+  <body class="preload">
+    <div class="bg-dot-container" aria-hidden="true">
+      <svg class="bg-dot-svg">
+        <defs>
+          <pattern id="dot-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.25" fill="currentColor" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#dot-pattern)" />
+      </svg>
+    </div>
+    <div id="app">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-inner">
+          <div class="logo-block">
+            <span class="logo-icon" aria-hidden="true">
+              <img
+                src="./favicon.svg"
+                alt=""
+                width="25"
+                height="25"
+                decoding="async"
+              />
+            </span>
+            <h1 class="logo-title">Endless <span class="logo-accent">TTT</span></h1>
+          </div>
+
+          <!-- Mode Switcher -->
+          <div class="mode-switcher" role="group" aria-label="Game mode">
+            <button
+              id="btn-mode-hvh"
+              class="mode-btn active"
+              aria-pressed="true"
+              title="Human vs Human"
+            >
+              <span class="mode-label">Pass &amp; Play</span>
+            </button>
+            <button
+              id="btn-mode-hvai"
+              class="mode-btn"
+              aria-pressed="false"
+              title="Human vs AI"
+            >
+              <span class="mode-label">vs AI</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="app-main">
+        <!-- Scoreboard -->
+        <div class="scoreboard" id="scoreboard" aria-live="polite">
+          <div class="score-card score-x">
+            <span class="score-symbol">✕</span>
+            <span class="score-name" id="score-label-x">Player X</span>
+            <span class="score-value" id="score-x">0</span>
+          </div>
+          <div class="score-divider">—</div>
+          <div class="score-card score-o">
+            <span class="score-symbol">○</span>
+            <span class="score-name" id="score-label-o">Player O</span>
+            <span class="score-value" id="score-o">0</span>
+          </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div
+          class="status-bar"
+          id="status-bar"
+          role="status"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <span id="status-text">X's turn to move</span>
+        </div>
+
+        <!-- Board -->
+        <div
+          class="board-wrapper"
+          id="board-wrapper"
+          aria-label="Tic-Tac-Toe board"
+        >
+          <div class="board" id="board" role="grid">
+            <!-- 9 cells rendered by boardRenderer.ts -->
+          </div>
+          <!-- Win overlay -->
+          <div class="win-overlay" id="win-overlay" aria-hidden="true" hidden>
+            <div class="win-card">
+              <p class="win-title" id="win-title">Player X Wins!</p>
+              <button class="btn-play-again" id="btn-play-again">Play Again</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Difficulty Bar (shown only in AI mode) -->
+        <div class="difficulty-bar" id="difficulty-bar" aria-label="AI Difficulty" hidden>
+          <!-- Desktop: sliding pill -->
+          <div class="pill-track" id="pill-track" role="group" aria-label="Select AI difficulty">
+            <div class="pill-slider" id="pill-slider" aria-hidden="true"></div>
+            <button class="pill-btn active" id="diff-casual"   data-diff="casual"      aria-pressed="true">Casual</button>
+            <button class="pill-btn"        id="diff-tactical" data-diff="tactical"    aria-pressed="false">Tactical</button>
+            <button class="pill-btn"        id="diff-grandmaster" data-diff="grandmaster" aria-pressed="false">Grandmaster</button>
+          </div>
+          <!-- Mobile: tap-to-cycle button -->
+          <button class="mobile-diff-btn" id="mobile-diff-btn" aria-label="Change AI difficulty">
+            <span class="mobile-diff-label" id="mobile-diff-label">Casual</span>
+          </button>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+          <button class="btn-restart" id="btn-restart" aria-label="Restart game">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+            Restart
+          </button>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend" aria-label="Mark state legend">
+          <div class="legend-item">
+            <span class="legend-dot dot-active"></span>
+            <span>Active mark</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot dot-expiring"></span>
+            <span>Expiring next turn</span>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="app-footer">
+        <p>Each player holds max 3 marks — the oldest vanishes on the 4th placement. No ties ever.</p>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
