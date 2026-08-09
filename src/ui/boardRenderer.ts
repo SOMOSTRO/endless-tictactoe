@@ -22,8 +22,7 @@ export function initBoard(): HTMLElement[] {
     const cell = document.createElement('button');
     cell.className = 'cell';
     cell.dataset.index = String(i);
-    cell.setAttribute('role', 'gridcell');
-    cell.setAttribute('aria-label', `Cell ${i + 1}, empty`);
+    cell.setAttribute('aria-label', `Cell ${i + 1}, Empty`);
     cell.setAttribute('tabindex', '0');
     boardEl.appendChild(cell);
     cells.push(cell);
@@ -55,7 +54,7 @@ function updateCell(
   ghosts.forEach((g) => cell.appendChild(g));
 
   if (!mark) {
-    cell.setAttribute('aria-label', `Cell ${index + 1}, empty`);
+    cell.setAttribute('aria-label', `Cell ${index + 1}, Empty`);
     cell.removeAttribute('data-player');
     cell.removeAttribute('data-state');
     return;
@@ -65,7 +64,7 @@ function updateCell(
   cell.setAttribute('data-state', mark.state);
   cell.setAttribute(
     'aria-label',
-    `Cell ${index + 1}, ${mark.player}, ${mark.state}`
+    `Cell ${index + 1}, Player ${mark.player}, ${mark.state}`
   );
 
   const inner = document.createElement('span');
