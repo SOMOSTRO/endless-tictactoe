@@ -48,8 +48,8 @@ The codebase is highly modular, separating game logic, AI, UI, and side-effects.
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd tictactoe
+   git clone [https://github.com/SOMOSTRO/endless-tictactoe.git](https://github.com/SOMOSTRO/endless-tictactoe.git)
+   cd endless-tictactoe
    ```
 
 2. **Install dependencies:**
