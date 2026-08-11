@@ -24,8 +24,8 @@
 
   /* Text */
   --color-text:     #E8EAF0;
-  --color-text-sub: #8B92A8;
-  --color-text-dim: #4A5066;
+  --color-text-sub: #CBD5E1;
+  --color-text-dim: #94A3B8;
 
   /* Expiring */
   --color-expiring: #ffffff18;
@@ -849,7 +849,6 @@ body {
 .legend {
   display: flex;
   gap: var(--space-lg);
-  opacity: 0.55;
 }
 
 .legend-item {
