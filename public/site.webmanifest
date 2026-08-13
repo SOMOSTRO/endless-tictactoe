@@ -1,7 +1,7 @@
 {
   "name": "Endless Tic-Tac-Toe",
   "short_name": "Endless TTT",
-  "description": "Tic-Tac-Toe with FIFO queue mechanics — no ties ever.",
+  "description": "An infinite, tactical Tic-Tac-Toe game featuring FIFO queue mechanics, a 3-tier Minimax AI, procedural audio feedback, and full offline support.",
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -12,14 +12,69 @@
       "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["games", "entertainment"]
+  "screenshots": [
+    {
+      "src": "./screenshot-mobile.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Endless Tic-Tac-Toe Mobile View"
+    },
+    {
+      "src": "./screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Endless Tic-Tac-Toe Desktop View"
+    }
+  ],
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "id": "endless-tictactoe-game",
+  "dir": "ltr",
+  "lang": "en",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "shortcuts": [
+    {
+      "name": "Pass & Play",
+      "short_name": "Pass & Play",
+      "description": "Play locally with a friend",
+      "url": "./?mode=pass-and-play",
+      "icons": [{ "src": "./icon-192.png", "sizes": "96x96 192x192" }]
+    },
+    {
+      "name": "Vs Grandmaster AI",
+      "short_name": "VS AI",
+      "description": "Challenge the Grandmaster AI",
+      "url": "./?mode=ai&difficulty=grandmaster",
+      "icons": [{ "src": "./icon-192.png", "sizes": "96x96 192x192" }]
+    }
+  ]
 }

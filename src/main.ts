@@ -7,6 +7,7 @@ import { ANIMATION } from './constants';
 import { applyMove, createInitialState } from './game/gameLogic';
 import { GameState } from './game/types';
 import { initPWA } from './pwa/registerServiceWorker';
+import { parsePwaShortcutParams } from './pwa/pwaShortcut';
 import {
   playError_SciFi,
   playO_SciFi,
@@ -102,6 +103,12 @@ class AppStateManager {
 
   setCells(cells: HTMLElement[]): void {
     this.cells = cells;
+  }
+
+  setInitialConfig(mode: GameMode, difficulty: Difficulty): void {
+    this.gameMode = mode;
+    this.difficulty = difficulty;
+    setPlayerLabels(mode);
   }
 
   // ─── Mode / Difficulty transitions ──────────────────────────────────────
@@ -343,14 +350,18 @@ function init(): void {
   const cells = initBoard();
   app.setCells(cells);
 
+  const initialConfig = parsePwaShortcutParams(window.location.search);
+  app.setInitialConfig(initialConfig.mode, initialConfig.difficulty);
+
   const syncModeUI = initModeControls((mode) => {
     app.changeMode(mode);
   });
   syncModeUI(app.getMode());
 
-  initDifficultyControls((diff) => {
+  const syncDiffUI = initDifficultyControls((diff) => {
     app.changeDifficulty(diff);
   });
+  syncDiffUI(app.getDifficulty());
 
   initRestartControl(() => app.restartMatch());
 
@@ -371,3 +382,4 @@ function init(): void {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+

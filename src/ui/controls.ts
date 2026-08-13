@@ -60,7 +60,7 @@ export function initModeControls(
 
 export function initDifficultyControls(
   onDifficultyChange: (diff: Difficulty) => void
-): void {
+): (diff: Difficulty) => void {
   const pillTrack = requireHtmlElement('pill-track');
   const pillSlider = requireHtmlElement('pill-slider');
   const mobileDiffBtn = requireButtonElement('mobile-diff-btn');
@@ -128,6 +128,8 @@ export function initDifficultyControls(
   });
 
   applyDifficulty('casual', false);
+
+  return (diff: Difficulty) => applyDifficulty(diff, false);
 }
 
 // ─── Restart button ─────────────────────────────────────────────────────────
