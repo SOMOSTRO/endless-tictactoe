@@ -4,17 +4,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0D0F12" />
+  <title>Endless Tic-Tac-Toe</title>
+
+  <!-- Primary Meta Tags -->
   <meta name="description"
     content="An infinite, tactical Tic-Tac-Toe game featuring FIFO queue mechanics, a 3-tier Minimax AI, procedural audio feedback, and full offline support." />
+  <meta name="keywords"
+    content="endless tic tac toe, web game, minimax ai, pwa, tactical board games, tic tac toe queue, infinite tic tac toe" />
+  <meta name="author" content="somostro" />
+  <meta name="theme-color" content="#0D0F12" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://endless-tictactoe-game.vercel.app/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://endless-tictactoe-game.vercel.app/" />
   <meta property="og:title" content="Endless Tic-Tac-Toe" />
   <meta property="og:description"
-    content="Tic-Tac-Toe reimagined. Each player's oldest mark vanishes when they place a 4th. No ties. Ever." />
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="icon" type="image/png" href="./images/icon-192.png" sizes="48x48 96x96 192x192">
-  <link rel="apple-touch-icon" href="/images/icon-192.png">
+    content="Tic-Tac-Toe reimagined. Each player's oldest mark vanishes when placing a 4th. No ties. Ever." />
+  <meta property="og:image" content="https://endless-tictactoe-game.vercel.app/images/screenshot-desktop.png" />
+  <meta property="og:image:width" content="1920" />
+  <meta property="og:image:height" content="1080" />
+  <meta property="og:image:alt" content="Endless Tic-Tac-Toe Game Interface" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Endless Tic-Tac-Toe" />
+  <meta name="twitter:description"
+    content="Tic-Tac-Toe reimagined with FIFO queue mechanics and AI. No ties. Ever." />
+  <meta name="twitter:image" content="https://endless-tictactoe-game.vercel.app/images/screenshot-desktop.png" />
+
+  <!-- Icons & Web Manifest -->
+  <link rel="icon" type="image/png" href="./images/icon-192.png" sizes="48x48 96x96 192x192" />
+  <link rel="apple-touch-icon" href="/images/icon-192.png" />
   <link rel="manifest" href="./site.webmanifest" />
+
+  <!-- Fonts & Stylesheets -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet"
@@ -25,7 +53,27 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" />
   </noscript>
   <link rel="stylesheet" href="/src/styles/main.css" />
-  <title>Endless Tic-Tac-Toe</title>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Endless Tic-Tac-Toe",
+    "description": "Tic-Tac-Toe reimagined. Each player's oldest mark vanishes when placing a 4th. No ties. Ever.",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Any",
+    "author": {
+      "@type": "Person",
+      "name": "somostro"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 </head>
 
 <body class="preload">
