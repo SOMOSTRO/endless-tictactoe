@@ -6,9 +6,10 @@ const PRECACHE_ASSETS = [
   './',
   './index.html',
   './site.webmanifest',
-  './favicon.svg',
-  './icon-192.png',
-  './icon-512.png',
+  './images/icon-192.png',
+  './images/icon-512.png',
+  './images/icon-maskable-192.png',
+  './images/icon-maskable-512.png'
 ];
 
 function assetUrl(path) {

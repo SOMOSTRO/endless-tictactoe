@@ -9,25 +9,25 @@
   "theme_color": "#0D0F12",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "./images/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-192.png",
+      "src": "./images/icon-maskable-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "./icon-512.png",
+      "src": "./images/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-512.png",
+      "src": "./images/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -35,14 +35,14 @@
   ],
   "screenshots": [
     {
-      "src": "./screenshot-mobile.png",
+      "src": "./images/screenshot-mobile.png",
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Endless Tic-Tac-Toe Mobile View"
     },
     {
-      "src": "./screenshot-desktop.png",
+      "src": "./images/screenshot-desktop.png",
       "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
@@ -67,14 +67,28 @@
       "short_name": "Pass & Play",
       "description": "Play locally with a friend",
       "url": "./?mode=pass-and-play",
-      "icons": [{ "src": "./icon-192.png", "sizes": "96x96 192x192" }]
+      "icons": [{ "src": "./images/shortcut-pass.png", "sizes": "96x96 192x192" }]
+    },
+    {
+      "name": "Vs Casual AI",
+      "short_name": "VS Casual AI",
+      "description": "Challenge the Casual AI",
+      "url": "./?mode=ai&difficulty=casual",
+      "icons": [{ "src": "./images/shortcut-ai.png", "sizes": "96x96 192x192" }]
+    },
+    {
+      "name": "Vs Tactical AI",
+      "short_name": "VS Tactical AI",
+      "description": "Challenge the Tactical AI",
+      "url": "./?mode=ai&difficulty=tactical",
+      "icons": [{ "src": "./images/shortcut-ai.png", "sizes": "96x96 192x192" }]
     },
     {
       "name": "Vs Grandmaster AI",
-      "short_name": "VS AI",
+      "short_name": "VS Grandmaster AI",
       "description": "Challenge the Grandmaster AI",
       "url": "./?mode=ai&difficulty=grandmaster",
-      "icons": [{ "src": "./icon-192.png", "sizes": "96x96 192x192" }]
+      "icons": [{ "src": "./images/shortcut-ai.png", "sizes": "96x96 192x192" }]
     }
   ]
 }
