@@ -21,6 +21,11 @@ This isn't your standard Tic-Tac-Toe. This is **Endless Tic-Tac-Toe**, featuring
   - **Casual**: Makes random moves for a relaxed game.
   - **Tactical**: Defends against immediate threats and utilizes queue-expiry awareness.
   - **Grandmaster**: Utilizes full Minimax with Alpha-Beta pruning for a near-unbeatable challenge.
+  - Opening moves are randomized across all cells to keep every match feeling fresh.
+- **Dual-Phase Timer System** *(Tactical & Grandmaster only)*: Time pressure mechanics that punish hesitation:
+  - **AI "Lazy Start"**: If you don't move quickly at the start of a match, the AI picks its optimal cell and a visible 2-second countdown begins — when it hits zero, the AI claims that cell.
+  - **Player Timeout Penalty**: After each AI move, a hidden grace period begins. If you stall, a 2-second countdown appears on the *worst possible cell* for you (calculated via Inverse Minimax). When it hits zero, your mark is forced there.
+  - A sleek SVG ring countdown overlay with neon-colored radial glows provides clear visual feedback during the visible phase.
 - **Web Audio Sound Engine**: A custom procedural Web Audio sound engine generating sci-fi inspired sound effects dynamically (no external audio files required!).
 - **Modern Dark UI**: A sleek, fully responsive, dark-themed user interface with fluid micro-animations and smooth state transitions.
 - **PWA Offline Functionality**: Fully installable as a Progressive Web App. Play offline anywhere, anytime.
@@ -30,8 +35,9 @@ This isn't your standard Tic-Tac-Toe. This is **Endless Tic-Tac-Toe**, featuring
 The codebase is highly modular, separating game logic, AI, UI, and side-effects.
 
 - `src/game/`: Pure, side-effect free game logic and state manipulation (`gameLogic.ts`).
-- `src/ai/`: AI heuristics, difficulty tuning, and the Minimax implementation (`aiEngine.ts`).
-- `src/ui/`: DOM manipulation, rendering, controls, and animations (`boardRenderer.ts`, `controls.ts`, `dom.ts`).
+- `src/ai/`: AI heuristics, difficulty tuning, Minimax, and Inverse Minimax engines (`aiEngine.ts`).
+- `src/timer/`: Dual-Phase Timer state machine and countdown logic (`dualPhaseTimer.ts`).
+- `src/ui/`: DOM manipulation, rendering, controls, timer overlays, and animations (`boardRenderer.ts`, `controls.ts`, `timerOverlay.ts`, `dom.ts`).
 - `src/pwa/`: Service worker registration for offline capabilities.
 - `src/utils/`: Generic utility functions for DOM and type safety.
 - `src/soundEngine.ts`: The procedural Web Audio API synthesizer.

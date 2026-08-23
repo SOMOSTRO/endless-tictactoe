@@ -91,3 +91,13 @@ export const HEURISTIC = {
 
 export const DEFAULT_PLAYER: Player = 'X';
 export const AI_PLAYER: Player = 'O';
+
+// ─── Dual-Phase Timer Configuration ───────────────────────────────────────
+
+export const TIMER_CONFIG = {
+  LAZY_START_HIDDEN_MS: 1500,
+  PENALTY_HIDDEN_MS: 1000,
+  VISIBLE_COUNTDOWN_MS: 2000,
+  SVG_RING_CIRCUMFERENCE: 263.8937, // 2 * pi * 42
+} as const;
+

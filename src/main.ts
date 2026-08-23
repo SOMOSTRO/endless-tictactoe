@@ -1,11 +1,12 @@
 import './styles/main.css';
 import { inject } from '@vercel/analytics';
 import { injectSpeedInsights } from '@vercel/speed-insights';
-import { AI_THINKING_DELAY, getBestMove } from './ai/aiEngine';
+import { AI_THINKING_DELAY, getBestMove, getWorstMove } from './ai/aiEngine';
 import { Difficulty } from './ai/types';
-import { ANIMATION } from './constants';
+import { ANIMATION, TIMER_CONFIG } from './constants';
 import { applyMove, createInitialState } from './game/gameLogic';
 import { GameState } from './game/types';
+import { DualPhaseTimer } from './timer/dualPhaseTimer';
 import { initPWA } from './pwa/registerServiceWorker';
 import { parsePwaShortcutParams } from './pwa/pwaShortcut';
 import {
@@ -62,6 +63,7 @@ class AppStateManager {
   private cells: HTMLElement[];
   private uiLocked: boolean;
   private aiAbortController: AbortController | null;
+  private dualTimer: DualPhaseTimer;
 
   constructor() {
     this.gameState = createInitialState();
@@ -71,6 +73,7 @@ class AppStateManager {
     this.cells = [];
     this.uiLocked = false;
     this.aiAbortController = null;
+    this.dualTimer = new DualPhaseTimer();
   }
 
   // ─── State accessors (read-only semantic) ───────────────────────────────
@@ -103,6 +106,7 @@ class AppStateManager {
 
   setCells(cells: HTMLElement[]): void {
     this.cells = cells;
+    this.dualTimer.setCells(cells);
   }
 
   setInitialConfig(mode: GameMode, difficulty: Difficulty): void {
@@ -163,6 +167,7 @@ class AppStateManager {
       this.updateStatusBar();
       enableBoard();
       this.maybeScheduleAI();
+      this.maybeStartLazyStartTimer();
     };
 
     if (animate) {
@@ -186,9 +191,54 @@ class AppStateManager {
     this.uiLocked = false;
   }
 
+  // ─── Dual-Phase Timer Management ─────────────────────────────────────────
+
+  private isTimerEligible(): boolean {
+    return (
+      this.gameMode === 'hvai' &&
+      (this.difficulty === 'tactical' || this.difficulty === 'grandmaster') &&
+      !this.gameState.isGameOver
+    );
+  }
+
+  private maybeStartLazyStartTimer(): void {
+    if (!this.isTimerEligible()) return;
+    if (this.gameState.currentPlayer !== 'X') return;
+
+    this.dualTimer.start('ai', TIMER_CONFIG.LAZY_START_HIDDEN_MS, {
+      getTargetCell: () => {
+        const dummyState = { ...this.gameState, currentPlayer: 'O' as const };
+        const best = getBestMove(dummyState, this.difficulty);
+        return best.cellIndex;
+      },
+      onTimerComplete: (targetCell) => {
+        if (this.gameState.isGameOver) return;
+        this.gameState.currentPlayer = 'O';
+        this.placeMove(targetCell);
+      },
+    });
+  }
+
+  private maybeStartPenaltyTimer(): void {
+    if (!this.isTimerEligible()) return;
+    if (this.gameState.currentPlayer !== 'X') return;
+
+    this.dualTimer.start('penalty', TIMER_CONFIG.PENALTY_HIDDEN_MS, {
+      getTargetCell: () => {
+        const worst = getWorstMove(this.gameState);
+        return worst.cellIndex;
+      },
+      onTimerComplete: (targetCell) => {
+        if (this.gameState.isGameOver) return;
+        this.placeMove(targetCell);
+      },
+    });
+  }
+
   // ─── AI async handling (AbortController-based) ───────────────────────────
 
   private cancelAIMove(): void {
+    this.dualTimer.abort();
     if (this.aiAbortController) {
       this.aiAbortController.abort();
       this.aiAbortController = null;
@@ -236,7 +286,14 @@ class AppStateManager {
   handleCellClick(idx: number): void {
     if (this.uiLocked || this.gameState.isGameOver) return;
     if (this.gameMode === 'hvai' && this.gameState.currentPlayer !== 'X') return;
-    if (this.gameState.board[idx] !== null) {
+
+    const currentPlayer = this.gameState.currentPlayer;
+    const queue = this.gameState.queues[currentPlayer];
+    const willExpire = queue.length >= 3;
+    const expiringIdx = willExpire ? queue[0] : -1;
+
+    // Reject invalid moves: occupied cell or player's own expiring mark
+    if (this.gameState.board[idx] !== null || (willExpire && expiringIdx === idx)) {
       const cell = this.cells[idx];
       playError_SciFi();
       cell.classList.add('cell--shake');
@@ -247,6 +304,9 @@ class AppStateManager {
       );
       return;
     }
+
+    // Valid move confirmed — abort active dual-phase timers before placing move
+    this.dualTimer.abort();
 
     this.placeMove(idx);
   }
@@ -293,6 +353,10 @@ class AppStateManager {
 
     this.updateStatusBar();
     this.maybeScheduleAI();
+
+    if (currentPlayer === 'O' && this.gameState.currentPlayer === 'X') {
+      this.maybeStartPenaltyTimer();
+    }
   }
 
   // ─── Status / Win handling ───────────────────────────────────────────────
@@ -300,7 +364,9 @@ class AppStateManager {
   private handleGameOver(): void {
     if (!this.gameState.winner) return;
 
+    this.dualTimer.abort();
     this.cancelAIMove();
+
     playWin_SciFi();
     freezeCellAnimations(this.cells);
     highlightWin(this.gameState.board, this.cells);

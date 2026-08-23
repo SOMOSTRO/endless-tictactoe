@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getBestMove } from './aiEngine';
+import { getBestMove, getWorstMove } from './aiEngine';
 import { Difficulty } from './types';
 import {
   applyMove,
@@ -184,11 +184,14 @@ describe('Tactical AI', () => {
     expect(m.cellIndex).toBe(2); // win > block
   });
 
-  it('ranks cells center > corners > edges when no tactical reason exists', () => {
-    // Empty board → no win, no block → rankCells order should apply.
+  it('randomizes opening move selection across all 9 cells with equal priority on empty board', () => {
     const s = createInitialState();
     const m = getBestMove(s, 'tactical');
-    expect(m.cellIndex).toBe(4); // center always #1 preferred
+    expect(m.cellIndex).toBeGreaterThanOrEqual(0);
+    expect(m.cellIndex).toBeLessThan(9);
+
+    const uniq = collectUniqueMoves(s, 'tactical', 200);
+    expect(uniq.size).toBeGreaterThanOrEqual(5);
   });
 });
 
@@ -212,10 +215,14 @@ describe('Grandmaster (minimax) AI', () => {
     expect(m.cellIndex).toBe(2);
   });
 
-  it('always plays center first on empty board (highest heuristic value)', () => {
+  it('randomizes opening move selection across all 9 cells with equal priority on empty board', () => {
     const s = createInitialState();
     const m = getBestMove(s, 'grandmaster');
-    expect(m.cellIndex).toBe(4);
+    expect(m.cellIndex).toBeGreaterThanOrEqual(0);
+    expect(m.cellIndex).toBeLessThan(9);
+
+    const uniq = collectUniqueMoves(s, 'grandmaster', 200);
+    expect(uniq.size).toBeGreaterThanOrEqual(5);
   });
 
   it('falls back to ranked cells if minimax has no preference (safety fallback path used)', () => {
@@ -271,3 +278,46 @@ describe('AI move selection respects own-expiring playable rule', () => {
     }
   );
 });
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  Inverse Minimax (getWorstMove) tests
+// ═══════════════════════════════════════════════════════════════════════════
+
+describe('Inverse Minimax — getWorstMove', () => {
+  it('returns a valid AIMove object with integer cellIndex 0-8', () => {
+    const s = createInitialState();
+    const m = getWorstMove(s);
+    expect(Number.isInteger(m.cellIndex)).toBe(true);
+    expect(m.cellIndex).toBeGreaterThanOrEqual(0);
+    expect(m.cellIndex).toBeLessThan(9);
+  });
+
+  it('always returns a cell that is currently playable', () => {
+    const s = stateFromMoves([0, 4, 1]);
+    const playable = new Set(getPlayableCells(s.board, s.queues, s.currentPlayer));
+    const m = getWorstMove(s);
+    expect(playable.has(m.cellIndex)).toBe(true);
+  });
+
+  it('selects a blunder move for player X that allows AI O to win on next turn if player fails to block', () => {
+    // Moves: X plays 8, O plays 0, X plays 7, O plays 1.
+    // Board: O O _ / _ _ _ / _ X X . Turn: X.
+    // O threatens top-row win at 2 (O has 0, 1).
+    // X should block at 2. If X fails to block at 2 (e.g. plays 3, 4, 5, 6), O wins next turn!
+    // So getWorstMove for X will select a non-blocking move (or blunder) that gives O maximum advantage.
+    const s = stateFromMoves([8, 0, 7, 1]);
+    expect(s.currentPlayer).toBe('X');
+    const worst = getWorstMove(s);
+    // worst.cellIndex must NOT be 2 (the block) because 2 is X's best defensive move!
+    expect(worst.cellIndex).not.toBe(2);
+  });
+
+  it('works correctly under full queue capacity with FIFO eviction', () => {
+    const s = stateAtSafeFullCapacity();
+    expect(s.currentPlayer).toBe('X');
+    const playable = new Set(getPlayableCells(s.board, s.queues, 'X'));
+    const worst = getWorstMove(s);
+    expect(playable.has(worst.cellIndex)).toBe(true);
+  });
+});
+

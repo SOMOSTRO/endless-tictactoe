@@ -41,6 +41,17 @@ export function getBestMove(
   }
 }
 
+// ─── Opening Move Selection ──────────────────────────────────────────────────
+
+function isBoardEmpty(board: Board): boolean {
+  return board.every((cell) => cell === null);
+}
+
+function getRandomOpeningMove(): AIMove {
+  const cellIndex = Math.floor(Math.random() * 9);
+  return { cellIndex };
+}
+
 // ─── Casual (random + instant 1-step win check) ─────────────────────────────
 
 function casualMove(state: GameState): AIMove {
@@ -57,6 +68,10 @@ function casualMove(state: GameState): AIMove {
 // ─── Tactical (blocks + queue-expiry awareness) ─────────────────────────────
 
 function tacticalMove(state: GameState): AIMove {
+  if (isBoardEmpty(state.board)) {
+    return getRandomOpeningMove();
+  }
+
   const ai = state.currentPlayer;
   const human: Player = ai === 'X' ? 'O' : 'X';
 
@@ -73,6 +88,10 @@ function tacticalMove(state: GameState): AIMove {
 // ─── Grandmaster (Minimax with alpha-beta pruning) ──────────────────────────
 
 function grandmasterMove(state: GameState): AIMove {
+  if (isBoardEmpty(state.board)) {
+    return getRandomOpeningMove();
+  }
+
   const ai = state.currentPlayer;
   let bestScore = -Infinity;
   let bestCell = -1;
@@ -224,3 +243,46 @@ function findImmediateWin(
   }
   return null;
 }
+
+// ─── Inverse Minimax ────────────────────────────────────────────────────────
+
+/**
+ * Inverse Minimax heuristic function.
+ * Evaluates candidate moves for state.currentPlayer (the player timing out) to find
+ * the absolute worst move for the player (maximizing the AI's advantage).
+ * Correctly accounts for the Endless FIFO queue (marks disappearing via applyMove).
+ */
+export function getWorstMove(state: GameState): AIMove {
+  const player = state.currentPlayer;
+  const aiPlayer: Player = player === 'X' ? 'O' : 'X';
+  let worstScoreForPlayer = -Infinity; // Maximum advantage for AI
+  let worstCell = -1;
+
+  const playable = getPlayableCells(state.board, state.queues, player);
+
+  for (const cell of playable) {
+    const next = applyMove(state, cell);
+    if (next === state) continue;
+
+    let score: number;
+    if (next.isGameOver) {
+      const base = (MINIMAX_DEPTH + 1) * HEURISTIC.WIN_BASE_MULTIPLIER;
+      score = next.winner === aiPlayer ? base : -base;
+    } else {
+      score = minimax(next, MINIMAX_DEPTH - 1, true, aiPlayer, -Infinity, Infinity);
+    }
+
+    if (score > worstScoreForPlayer) {
+      worstScoreForPlayer = score;
+      worstCell = cell;
+    }
+  }
+
+  if (worstCell === -1) {
+    const fallback = rankCells(state.board, state.queues, player);
+    worstCell = fallback[fallback.length - 1] ?? playable[0];
+  }
+
+  return { cellIndex: worstCell };
+}
+
