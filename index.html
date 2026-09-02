@@ -117,13 +117,21 @@
       <!-- Scoreboard -->
       <div class="scoreboard" id="scoreboard" aria-live="polite">
         <div class="score-card score-x">
-          <span class="score-symbol">✕</span>
+          <span class="score-symbol" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 5 5 L 19 19 M 19 5 L 5 19" />
+            </svg>
+          </span>
           <span class="score-name" id="score-label-x">Player X</span>
           <span class="score-value" id="score-x">0</span>
         </div>
         <div class="score-divider">—</div>
         <div class="score-card score-o">
-          <span class="score-symbol">○</span>
+          <span class="score-symbol" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="7" />
+            </svg>
+          </span>
           <span class="score-name" id="score-label-o">Player O</span>
           <span class="score-value" id="score-o">0</span>
         </div>

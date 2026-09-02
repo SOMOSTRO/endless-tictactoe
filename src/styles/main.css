@@ -283,9 +283,17 @@ body {
 }
 
 .score-symbol {
-  font-family: var(--font-brand);
-  font-size: 1.1rem;
-  font-weight: 700;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-symbol svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .score-card.score-x .score-symbol {
@@ -462,14 +470,21 @@ body {
 
 /* ─── Cell Mark ──────────────────────────────────────────────────────────── */
 .cell-mark {
-  font-family: var(--font-brand);
-  font-size: calc(var(--cell-size) * 0.42);
-  font-weight: 800;
-  line-height: 1;
-  display: block;
+  width: calc(var(--cell-size) * 0.45);
+  height: calc(var(--cell-size) * 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity var(--t-normal);
   user-select: none;
   pointer-events: none;
+}
+
+.cell-mark-svg {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.2);
+  display: block;
 }
 
 .cell[data-player="X"] .cell-mark {
@@ -497,8 +512,7 @@ body {
 
 /* ─── Cell Eviction Ghost Overlay ────────────────────────────────────────────
    Placed by animateExpiry() as a sibling to .cell-mark. Inherits the mark's
-   color via a single inline `color` style (captured from the live mark before
-   eviction) — all layout lives here in CSS for theming consistency.
+   color via a single inline `color` style.
 */
 .cell-evict-ghost {
   position: absolute;
@@ -506,12 +520,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-brand);
-  font-size: calc(var(--cell-size) * 0.42);
-  font-weight: 800;
   pointer-events: none;
   z-index: 6;
-  line-height: 1;
+}
+
+.cell-evict-ghost svg {
+  width: calc(var(--cell-size) * 0.45);
+  height: calc(var(--cell-size) * 0.45);
+  display: block;
 }
 
 /* ─── Win / Dim states ───────────────────────────────────────────────────── */
@@ -1125,21 +1141,22 @@ body {
   z-index: 5;
   border-radius: inherit;
   overflow: hidden;
+  opacity: 1;
   animation: bounce-in 200ms ease-out both;
 }
 
 .cell-timer-overlay--ai {
-  --timer-color: #00A3FF;
-  --timer-glow: rgba(0, 163, 255, 0.25);
-  background: radial-gradient(circle at center, rgba(0, 163, 255, 0.14) 0%, transparent 75%);
-  box-shadow: inset 0 0 10px rgba(0, 163, 255, 0.2);
+  --timer-color: var(--color-o-dim);
+  --timer-glow: var(--color-o-glow);
+  background: radial-gradient(circle at center, var(--color-o-glow) 0%, transparent 75%);
+  box-shadow: inset 0 0 8px var(--color-o-glow);
 }
 
 .cell-timer-overlay--penalty {
-  --timer-color: #FF2A5F;
-  --timer-glow: rgba(255, 42, 95, 0.25);
-  background: radial-gradient(circle at center, rgba(255, 42, 95, 0.14) 0%, transparent 75%);
-  box-shadow: inset 0 0 10px rgba(255, 42, 95, 0.2);
+  --timer-color: var(--color-x-dim);
+  --timer-glow: var(--color-x-glow);
+  background: radial-gradient(circle at center, var(--color-x-glow) 0%, transparent 75%);
+  box-shadow: inset 0 0 8px var(--color-x-glow);
 }
 
 .cell-timer-svg {
@@ -1153,7 +1170,7 @@ body {
 
 .cell-timer-bg {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255, 255, 255, 0.06);
   stroke-width: 3;
 }
 
@@ -1164,7 +1181,7 @@ body {
   stroke-linecap: round;
   stroke-dasharray: 263.8937;
   stroke-dashoffset: 0;
-  filter: drop-shadow(0 0 4px var(--timer-color));
+  filter: drop-shadow(0 0 3px var(--timer-glow));
   will-change: stroke-dashoffset;
 }
 
@@ -1178,7 +1195,7 @@ body {
   font-size: calc(var(--cell-size) * 0.32);
   font-weight: 500;
   color: var(--timer-color);
-  text-shadow: 0 0 6px var(--timer-glow);
+  text-shadow: 0 0 4px var(--timer-glow);
   z-index: 2;
   user-select: none;
   line-height: 1;

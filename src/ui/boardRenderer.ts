@@ -39,6 +39,40 @@ export function renderBoard(board: Board, cells: HTMLElement[]): void {
   });
 }
 
+// ─── SVG Mark Factory ────────────────────────────────────────────────────────
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+export function createMarkSvgElement(
+  player: Player,
+  className = 'cell-mark-svg'
+): SVGElement {
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('class', className);
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('aria-hidden', 'true');
+
+  if (player === 'X') {
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    const path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('d', 'M 5 5 L 19 19 M 19 5 L 5 19');
+    svg.appendChild(path);
+  } else {
+    svg.setAttribute('stroke-width', '1.5');
+    const circle = document.createElementNS(SVG_NS, 'circle');
+    circle.setAttribute('cx', '12');
+    circle.setAttribute('cy', '12');
+    circle.setAttribute('r', '7');
+    svg.appendChild(circle);
+  }
+
+  return svg;
+}
+
 function updateCell(
   cell: HTMLElement,
   mark: CellMark | null,
@@ -70,7 +104,7 @@ function updateCell(
   const inner = document.createElement('span');
   inner.className = 'cell-mark';
   inner.setAttribute('aria-hidden', 'true');
-  inner.textContent = mark.player === 'X' ? '✕' : '○';
+  inner.appendChild(createMarkSvgElement(mark.player));
   cell.appendChild(inner);
 }
 
@@ -91,10 +125,13 @@ export function animateExpiry(cell: HTMLElement): void {
   const existingMark = cell.querySelector('.cell-mark');
   if (!existingMark) return;
 
+  const player = (cell.dataset.player as Player | undefined) ?? 'X';
+
   const ghost = document.createElement('span');
   ghost.className = 'cell-evict-ghost';
   ghost.setAttribute('aria-hidden', 'true');
-  ghost.textContent = existingMark.textContent;
+  ghost.dataset.player = player;
+  ghost.appendChild(createMarkSvgElement(player, 'cell-mark-svg'));
 
   // Capture the mark's final computed color (player-dependent) as a single
   // inline style. All layout lives in .cell-evict-ghost CSS class — this
