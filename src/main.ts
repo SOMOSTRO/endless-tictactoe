@@ -7,8 +7,7 @@ import { ANIMATION, TIMER_CONFIG } from './constants';
 import { applyMove, createInitialState } from './game/gameLogic';
 import { GameState } from './game/types';
 import { DualPhaseTimer } from './timer/dualPhaseTimer';
-import { initPWA } from './pwa/registerServiceWorker';
-import { parsePwaShortcutParams } from './pwa/pwaShortcut';
+import { initPWA, initPwaInstaller, parsePwaShortcutParams } from './pwa/pwa';
 import {
   playError_SciFi,
   playO_SciFi,
@@ -413,6 +412,7 @@ function init(): void {
   inject();
   injectSpeedInsights();
   initPWA();
+  initPwaInstaller();
   const cells = initBoard();
   app.setCells(cells);
 

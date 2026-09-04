@@ -1,0 +1,36 @@
+# Endless Tic-Tac-Toe
+
+> An endless, modern variant of Tic-Tac-Toe featuring a 3-mark FIFO (First-In, First-Out) queue mechanic. Unlike traditional Tic-Tac-Toe where the grid fills up and results in a draw, each player is restricted to a maximum of three active marks on the board. Placing a fourth mark automatically removes the player's oldest active mark, preventing stalemates and requiring continuous tactical planning.
+
+- **Project Name:** Endless Tic-Tac-Toe
+- **Live URL:** https://endless-tictactoe-game.vercel.app/
+- **Author:** somostro
+- **License:** MIT
+
+## Overview & Game Mechanics
+
+In standard 3x3 Tic-Tac-Toe, optimal play inevitably leads to a draw once all nine squares are filled. Endless Tic-Tac-Toe eliminates stalemates entirely through a dynamic FIFO mark queue:
+- **3-Mark FIFO Limit:** Each player can maintain at most three active marks on the board simultaneously.
+- **Disappearing Marks:** Placing a 4th mark automatically evaporates the player's oldest (1st) active mark.
+- **Winning Condition:** A player wins when three of their active marks align horizontally, vertically, or diagonally before an expiring mark disappears.
+
+## Core Features & Game Modes
+
+- **3-Mark FIFO Queue:** Continuous cycling board preventing stalemates and forcing multi-turn strategy.
+- **Multi-Tier Minimax AI:**
+  - **Casual:** Beginner-friendly AI with exploratory heuristic choices for learning queue dynamics.
+  - **Tactical:** Balanced AI that proactively threatens wins, blocks opponent lines, and avoids self-eviction pitfalls.
+  - **Grandmaster:** Deep, full-depth Minimax search algorithm with optimal adversarial lookahead.
+- **Dual-Phase Blitz Mode:** High-stakes countdowns featuring Lazy-Start timers and Inverse Minimax penalties to test lightning-fast tactical decision-making under time pressure.
+- **Pass & Play (HvH):** Seamless turn-based local multiplayer on a single device.
+- **Progressive Web App (PWA):** 100% offline support via Service Worker caching, instant app installation, custom window controls overlay, and mobile touch optimization.
+
+## Technical Stack
+
+- **Core:** TypeScript, HTML5 Semantic Structure
+- **Styling:** Vanilla CSS (Midnight Kinetic Design System with HSL tokens and GPU-accelerated micro-animations)
+- **Bundler & Build Tool:** Vite
+- **Testing & Quality:** Vitest, ESLint, TypeScript compiler (`tsc --noEmit`)
+- **Graphics & Audio:** Responsive SVG icons and grids, Web Audio API procedural sound synthesis
+- **PWA & Offline:** Service Worker Cache Storage API, Web App Manifest with Shortcuts and Window Controls Overlay
+- **Hosting & Analytics:** Vercel, Vercel Web Analytics, Vercel Speed Insights

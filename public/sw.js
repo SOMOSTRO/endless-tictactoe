@@ -1,6 +1,6 @@
 // Endless Tic-Tac-Toe — Stale-While-Revalidate PWA Service Worker
 
-const CACHE_NAME = 'endless-ttt-v2.2.1';
+const CACHE_NAME = 'endless-ttt-v2.3.1';
 const CACHE_PREFIX = 'endless-ttt-';
 const PRECACHE_ASSETS = [
   './',

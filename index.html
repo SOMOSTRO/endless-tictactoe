@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Endless Tic-Tac-Toe</title>
+  <title>Endless Tic Tac Toe – Play Online vs AI &amp; Blitz Mode PWA</title>
 
   <!-- Primary Meta Tags -->
   <meta name="description"
-    content="An infinite, tactical Tic-Tac-Toe game featuring FIFO queue mechanics, a 3-tier Minimax AI, procedural audio feedback, and full offline support." />
+    content="Play Endless Tic-Tac-Toe online for free. Experience the 3-mark disappearing FIFO board, multi-tier Minimax AI, Blitz Mode timers, and offline PWA support." />
   <meta name="keywords"
     content="endless tic tac toe, web game, minimax ai, pwa, tactical board games, tic tac toe queue, infinite tic tac toe" />
   <meta name="author" content="somostro" />
@@ -24,10 +24,11 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Endless Tic-Tac-Toe" />
   <meta property="og:url" content="https://endless-tictactoe-game.vercel.app/" />
-  <meta property="og:title" content="Endless Tic-Tac-Toe" />
+  <meta property="og:title" content="Endless Tic Tac Toe – Play Online vs AI &amp; Blitz Mode PWA" />
   <meta property="og:description"
-    content="Tic-Tac-Toe reimagined. Each player's oldest mark vanishes when placing a 4th. No ties. Ever." />
+    content="Play Endless Tic-Tac-Toe online for free. Experience the 3-mark disappearing FIFO board, multi-tier Minimax AI, Blitz Mode timers, and offline PWA support." />
   <meta property="og:image" content="https://endless-tictactoe-game.vercel.app/images/screenshot-desktop.png" />
   <meta property="og:image:width" content="1920" />
   <meta property="og:image:height" content="1080" />
@@ -35,8 +36,9 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Endless Tic-Tac-Toe" />
-  <meta name="twitter:description" content="Tic-Tac-Toe reimagined with FIFO queue mechanics and AI. No ties. Ever." />
+  <meta name="twitter:title" content="Endless Tic Tac Toe – Play Online vs AI &amp; Blitz Mode PWA" />
+  <meta name="twitter:description"
+    content="Play Endless Tic-Tac-Toe online for free. Experience the 3-mark disappearing FIFO board, multi-tier Minimax AI, Blitz Mode timers, and offline PWA support." />
   <meta name="twitter:image" content="https://endless-tictactoe-game.vercel.app/images/screenshot-desktop.png" />
 
   <!-- Icons & Web Manifest -->
@@ -197,10 +199,52 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="app-footer">
-      <p>Each player holds max 3 marks — the oldest vanishes on the 4th placement. No ties ever.</p>
-    </footer>
+    <!-- Semantic SEO & Informational Section -->
+    <section class="seo-info-section" aria-labelledby="seo-about-title">
+      <div class="seo-section-inner">
+        <h2 id="seo-about-title" class="seo-main-heading">About Endless Tic-Tac-Toe</h2>
+
+        <article class="seo-article">
+          <h3 class="seo-sub-heading">Game Rules &amp; Disappearing Mark Mechanic</h3>
+          <p>
+            In Endless Tic-Tac-Toe, each player can only have 3 active marks on the board at a time. Placing your 4th mark automatically removes your oldest one. Because old marks keep disappearing, the board never fills up and games never end in a draw. Connect three of your active marks horizontally, vertically, or diagonally to win.
+          </p>
+        </article>
+
+        <article class="seo-article">
+          <h3 class="seo-sub-heading">Game Modes: Minimax AI &amp; Blitz Challenge</h3>
+          <p>
+            Play locally with friends in Pass &amp; Play mode or challenge our 3-tier Minimax AI:
+          </p>
+          <ul class="seo-list">
+            <li><strong>Casual:</strong> Relaxed play for learning the disappearing mark mechanics.</li>
+            <li><strong>Tactical:</strong> Smart AI that blocks wins and creates traps, built-in with Blitz timers.</li>
+            <li><strong>Grandmaster:</strong> Full Minimax engine evaluating every move, paired with dual-phase Blitz timers.</li>
+          </ul>
+          <p>
+            In Tactical and Grandmaster modes, Blitz mechanics are active automatically: take too long on your turn and an Inverse Minimax penalty will force a move on your worst cell.
+          </p>
+        </article>
+
+        <article class="seo-article">
+          <h3 class="seo-sub-heading">Progressive Web App (PWA) Support</h3>
+          <p>
+            Endless Tic-Tac-Toe works offline and loads instantly as a Progressive Web App (PWA).
+          </p>
+          <div id="pwa-status-container" class="pwa-status">
+            <button id="seo-pwa-install-btn" class="btn btn--secondary" hidden>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>Install App</span>
+            </button>
+            <span id="pwa-status-text" class="pwa-status-text"></span>
+          </div>
+        </article>
+      </div>
+    </section>
   </div>
 
   <script type="module" src="/src/main.ts"></script>
